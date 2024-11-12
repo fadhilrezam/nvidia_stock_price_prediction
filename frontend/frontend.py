@@ -1,5 +1,5 @@
-from utils.logger import logging
-from utils.exception import CustomException
+# from utils.logger import logging
+# from utils.exception import CustomException
 import sys
 
 import streamlit as st
@@ -54,10 +54,11 @@ try:
                 st.write("No data available for the selected date range.")
 
         except Exception as e:
-            logging.error(CustomException(e, sys))
+            st.error(f"Error: {e}")
 
 except Exception as e:
-    logging.error(CustomException(e, sys))
+    # logging.error(CustomException(e, sys))
+    st.error(f"Error: {e}")
 
 
 
