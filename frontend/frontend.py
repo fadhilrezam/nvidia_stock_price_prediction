@@ -29,7 +29,8 @@ try:
             'end_date': end_date.strftime('%Y-%m-%d')
         }
 
-        main_url = "http://127.0.0.1:5000/?"
+        # main_url = "http://127.0.0.1:5000/?"
+        main_url = "https://mutual-jolyn-fadhilrezam-e8b0b3af.koyeb.app/?"
         url = main_url + urllib.parse.urlencode(data)
 
         try:
