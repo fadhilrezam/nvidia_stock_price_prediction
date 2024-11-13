@@ -24,7 +24,7 @@ def load_model_and_exog():
     # Debug logs
     logging.info(f"Model path: {model_path}")
     logging.info(f"Dataframe path: {df_path}")
-    print(model_path)
+    # print(model_path)
     print(f"Model path exists: {os.path.exists(model_path)}")
     print(f"Dataframe path exists: {os.path.exists(df_path)}")
   

@@ -1,6 +1,6 @@
 # from utils.logger import logging
 # from utils.exception import CustomException
-import sys
+# import sys
 
 import streamlit as st
 import datetime
@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 import requests
 import urllib.parse
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(layout="wide")
 
@@ -29,32 +29,36 @@ try:
             'end_date': end_date.strftime('%Y-%m-%d')
         }
 
-        # main_url = "http://127.0.0.1:5000/?"
-        main_url = "https://mutual-jolyn-fadhilrezam-e8b0b3af.koyeb.app/?"
+        main_url = "http://127.0.0.1:5000/?"
         url = main_url + urllib.parse.urlencode(data)
 
         try:
             # Make the API request
             json_response = requests.get(url, json=data).json()
             if json_response:
+
                 # Convert response to DataFrame and display it
                 df = pd.DataFrame.from_dict(json_response, orient='index').rename(
                     columns={'close_pred_original_scale': 'Predicted Close Price'})
-                st.dataframe(df)
-                fig, ax = plt.subplots(figsize = (20,2), dpi = 500)
-                
-                ax.plot(df.index, df['Predicted Close Price'], marker='o') 
-                ax.set_title(f'NVIDIA Predicted Close Price ({df.index.min()} to {df.index.max()})')
-                ax.set_xlabel("Date")
-                ax.set_ylabel("Predicted Close Price")
-                st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
-                st.pyplot(fig, use_container_width= True)
-                st.markdown("</div>", unsafe_allow_html=True)
+                df.index = pd.to_datetime(df.index)
+                df.index = df.index.strftime('%d %B, %Y')
+                col1, col2 = st.columns([0.2, 0.8])
+                with col1:
+                    st.dataframe(df)
+                with col2:
+                    min_date = df.index.min()
+                    max_date = df.index.max()
+                    fig = px.line(df, x = df.index, y = df['Predicted Close Price'], markers = True)
+                    fig.update_layout(
+                        xaxis_title="Date",
+                        title_text=f'Predicted Close Price ({min_date} to {max_date})', title_font=dict(color="green", size = 20))
+                    fig.update_traces(hovertemplate=None)
+                    st.plotly_chart(fig, use_container_width=True)
             else:
                 st.write("No data available for the selected date range.")
 
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.error(f'Error: {e}')
 
 except Exception as e:
     # logging.error(CustomException(e, sys))
