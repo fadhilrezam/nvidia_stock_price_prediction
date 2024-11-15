@@ -25,8 +25,6 @@ try:
     min_date = df.index.max() + relativedelta(days = 1)
     max_date = pd.date_range(min_date, periods = 14, freq = 'B').max()
 
-    st.write(min_date)
-    st.write(max_date)
     start_date = st.date_input('Start Date', value = datetime.date(2024,10,5), min_value = min_date)
     end_date = st.date_input('End Date', value = datetime.date(2024,10,13), max_value = max_date)
 
