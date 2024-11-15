@@ -9,18 +9,26 @@ import requests
 import urllib.parse
 import pandas as pd
 import plotly.express as px
+import os
 
 st.set_page_config(layout="wide")
 
 
 st.markdown("<h1 style='text-align: center;'>NVIDIA Stock Close Price Prediction</h1>", unsafe_allow_html=True)
+df_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'data','df_cleaned.csv'))
+if os.path.exists(df_path):
+    df = pd.read_csv(df_path, index_col = 0)
+    df.index = pd.to_datetime(df.index)
 
 try:
     st.markdown("<h3 style='text-align: left;'>Select Date Range</h3>", unsafe_allow_html=True)
-    min_value_start = datetime.date(2024,10,5)
-    min_value_end = min_value_start + relativedelta(days = 1)
-    start_date = st.date_input('Start Date', value = datetime.date(2024,10,5), min_value = min_value_start)
-    end_date = st.date_input('End Date', value = datetime.date(2024,10,13), min_value = min_value_end)
+    min_date = df.index.max() + relativedelta(days = 1)
+    max_date = pd.date_range(min_date, periods = 14, freq = 'B').max()
+
+    st.write(min_date)
+    st.write(max_date)
+    start_date = st.date_input('Start Date', value = datetime.date(2024,10,5), min_value = min_date)
+    end_date = st.date_input('End Date', value = datetime.date(2024,10,13), max_value = max_date)
 
     if st.button("Submit"):
         # Prepare data for the prediction request
@@ -42,7 +50,7 @@ try:
                 df = pd.DataFrame.from_dict(json_response, orient='index').rename(
                     columns={'close_pred_original_scale': 'Predicted Close Price'})
                 df.index = pd.to_datetime(df.index)
-                df.index = df.index.strftime('%d %B, %Y')
+                df.index = df.index.strftime('%d %b, %Y')
                 col1, col2 = st.columns([0.2, 0.8])
                 with col1:
                     st.dataframe(df)
@@ -59,7 +67,7 @@ try:
                 st.write("No data available for the selected date range.")
 
         except Exception as e:
-            st.error(f'Error: {e}')
+            st.error('No Prediction for Selected Date Range (Make Sure the date containts a weekday)')
 
 except Exception as e:
     # logging.error(CustomException(e, sys))

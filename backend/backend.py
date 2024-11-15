@@ -9,7 +9,6 @@ from flask_cors import CORS
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from statsmodels.tsa.arima.model import ARIMA
 
 import warnings
 warnings.filterwarnings("ignore")
