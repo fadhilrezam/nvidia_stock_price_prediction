@@ -86,9 +86,18 @@ mlflow ui
 
 ## 🌐 Deployment
 
-### Backend (Flask)
-Available endpoints:
-- GET `/`: Get close price predictions
+### **Backend (Flask)**
+The API backend is deployed using Koyeb. Below are the available endpoints to call for predicting NVIDIA stock close prices:
+
+#### **Calling the API Locally**
+If Flask is running locally, you can call the API using the following URL:
+```bash
+http://localhost:5000/?start_date=2024-10-05&end_date=2024-10-12
+```
+#### **Calling the API with Koyeb Deployment Link**
+I already deploy flask via Koyeb, you can call the API using the following URL:
+```bash
+https://mutual-jolyn-fadhilrezam-e8b0b3af.koyeb.app/?start_date=2024-10-05&end_date=2024-10-12
 
 
 ### Frontend (Streamlit)
