@@ -5,7 +5,7 @@ import os
 import joblib
 
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+# from flask_cors import CORS
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -14,7 +14,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 def load_model_and_exog():
     model_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'models', 'arima_model.pkl'))
